@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, Package, TrendingUp, Truck, Calculator, Upload } from "lucide-react";
+import { ArrowRight, CheckCircle2, Package, TrendingUp, Truck, Calculator, Upload, UserPlus } from "lucide-react";
 
 const CONNECT = "https://connect.nice-supply.com";
 
@@ -79,8 +79,11 @@ export default function App() {
             <a href={`${CONNECT}/analyzer`} className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-[#2563EB] transition-colors">
               <Upload className="h-4 w-4" /> Import Bulk Analyzer
             </a>
+            <a href={`${CONNECT}/register`} className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-[#2563EB] px-4 py-2 text-sm font-semibold text-[#2563EB] hover:bg-blue-50 transition-colors whitespace-nowrap">
+              <UserPlus className="h-4 w-4" /> Apply as Partner
+            </a>
             <a href={`${CONNECT}/login`} className="inline-flex items-center rounded-lg bg-[#2563EB] hover:bg-[#1d4ed8] px-4 py-2 text-sm font-semibold text-white transition-colors whitespace-nowrap">
-              Nice and Co.nnect Login
+              Co.nnect Login
             </a>
           </nav>
         </div>
@@ -101,13 +104,19 @@ export default function App() {
             none of the guesswork.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <a href={`${CONNECT}/analyzer`} className="inline-flex items-center gap-2 rounded-lg bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1d4ed8] transition-colors shadow-sm">
-              <Upload className="h-4 w-4" /> Upload ASINs into Wholesale Analyzer
+            <a href={`${CONNECT}/register`} className="inline-flex items-center gap-2 rounded-lg bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1d4ed8] transition-colors shadow-sm">
+              <UserPlus className="h-4 w-4" /> Apply as a Client Partner
             </a>
-            <a href={`${CONNECT}/calculator`} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-[#1E3A5F] hover:bg-slate-50 transition-colors shadow-sm">
-              <Calculator className="h-4 w-4" /> Wholesale Calculator
+            <a href={`${CONNECT}/analyzer`} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-[#1E3A5F] hover:bg-slate-50 transition-colors shadow-sm">
+              <Upload className="h-4 w-4" /> Free ASIN Analysis
             </a>
           </div>
+          <p className="text-sm text-slate-500 pt-1">
+            Already a partner?{" "}
+            <a href={`${CONNECT}/login`} className="text-[#2563EB] font-medium hover:underline">
+              Sign in to Co.nnect →
+            </a>
+          </p>
         </div>
       </section>
 
@@ -200,8 +209,9 @@ export default function App() {
           </div>
           <div className="flex items-center gap-4 text-sm">
             <a href={`${CONNECT}/calculator`} className="text-slate-500 hover:text-[#2563EB] transition-colors">Wholesale Calculator</a>
-            <a href={`${CONNECT}/analyzer`} className="text-slate-500 hover:text-[#2563EB] transition-colors">Import Bulk Analyzer</a>
-            <a href={`${CONNECT}/login`} className="text-[#2563EB] font-medium hover:underline">Nice and Co.nnect Login →</a>
+            <a href={`${CONNECT}/analyzer`} className="text-slate-500 hover:text-[#2563EB] transition-colors">ASIN Analyzer</a>
+            <a href={`${CONNECT}/register`} className="text-slate-500 hover:text-[#2563EB] transition-colors">Apply as Partner</a>
+            <a href={`${CONNECT}/login`} className="text-[#2563EB] font-medium hover:underline">Co.nnect Login →</a>
           </div>
         </div>
       </footer>
