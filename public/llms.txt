@@ -1,0 +1,87 @@
+# Nice and Co.
+
+> Nice and Co. is a Cleveland, Ohio-based company that acts as an Amazon and Wayfair 1P Vendor of Record for consumer brands. We manage all Vendor Central operations on behalf of brand partners — no upfront fees, no vendor invitation required.
+
+## What We Do
+
+Nice and Co. enables brands to sell on Amazon and Wayfair through the first-party (1P) wholesale channel without needing their own vendor account. We operate as the Vendor of Record under our established Amazon Vendor Central account (vendor code TOTG8, sold by RetailSource Grocery).
+
+**Our co-op model:**
+- Brand partners supply their products and target wholesale pricing
+- Nice and Co. submits ASINs to Amazon and Wayfair under our vendor code
+- Amazon issues purchase orders (POs) directly to Nice and Co.
+- We remit net payment to the brand after deducting our co-op fee
+- No upfront fees — we earn only when the brand earns
+
+## Who We Help
+
+- Brands whose Amazon Vendor Central account was terminated and need a path back to 1P revenue
+- Brands stuck in Amazon 3P (Seller Central) who want access to 1P POs and nationwide FC stocking
+- Brands launching on Amazon or Wayfair for the first time who don't have a vendor invitation
+- Brands that want the benefits of 1P (Prime eligibility, algorithm priority, Amazon-handled fulfillment) without building an in-house vendor management team
+
+## The Amazon 1P Advantage Over 3P
+
+- Amazon's search algorithm prioritizes products with nationwide FC inventory stocking (1P)
+- 1P brands often see double the wholesale revenue vs. 3P
+- Amazon handles all retail sales, Prime shipping, Buy Box, and customer service
+- Brand retains control of content, advertising, and brand identity
+
+## Services
+
+### Onboarding & Compliance Setup
+Item setup and catalog matching, brand content and asset migration, fulfillment compliance and routing verification, UPC assignment, pricing prep, and margin modeling.
+
+### Offer Submission & ASIN Management
+Structured offer creation using brand target costs, ASIN submission to Amazon Vendor Central and Wayfair, co-op allowance management, and chargeback resolution.
+
+### Purchase Order & Shipment Management
+Amazon PO acceptance, shipment routing and Advance Ship Notice (ASN) creation, compliance with Amazon FC routing requirements, and invoice submission.
+
+### Remittance & Financial Reporting
+Net remittance to brand partners after Amazon deductions and Nice and Co. co-op fee. Transparent reporting via the Co.nnect portal showing POs, shipments, remittances, and catalog status.
+
+### Free ASIN Analysis
+Brands with existing ASINs can upload their catalog to receive a free analysis showing: estimated remittance per unit, required Amazon cost, implied retail price, monthly GMV potential, and total brand profitability breakdown.
+
+## Pricing Model
+
+Nice and Co. uses a co-op fee structure:
+
+```
+Amazon pays Nice and Co. (Amazon Cost)
+  - 5% MDF Co-op
+  - 13% MDF Co-op
+  - 3% Freight Allowance
+  - 2% Damage Allowance
+  - 2% Early Pay Discount
+= Net to Nice and Co. (75% of Amazon Cost)
+  - 10% Nice and Co. Co-Op Fee
+= Brand Partner Net (67.5% of Amazon Cost)
+```
+
+The brand sets a wholesale target net — what they want to receive after all deductions. Nice and Co. back-calculates the required Amazon cost and implied retail price.
+
+## Contact & Location
+
+- **Website:** https://www.nice-supply.com
+- **Portal:** https://connect.nice-supply.com
+- **Email:** info@nice-supply.com
+- **Address:** 425 Literary Rd, Suite 325, Cleveland, OH 44113
+- **Hours:** Monday through Friday, 9 AM to 5 PM ET
+
+## The Co.nnect Portal
+
+Brand partners manage their relationship through Co.nnect (connect.nice-supply.com) — a private portal for tracking purchase orders, shipments, financials, catalog status, and remittance history.
+
+## Key Terms
+
+- **1P / First-Party:** Amazon or Wayfair buys inventory directly from the vendor via PO and resells it at retail
+- **3P / Third-Party:** Brand lists and sells directly to consumers on Amazon Marketplace (Seller Central)
+- **Vendor of Record:** The registered vendor entity in Amazon or Wayfair's system — Nice and Co. holds this role on behalf of brand partners
+- **Co-Op Fee:** The percentage Nice and Co. deducts from net remittance as compensation for vendor management services
+- **PO (Purchase Order):** Amazon's order to the vendor to ship inventory to their fulfillment centers
+- **ASN (Advance Ship Notice):** Required notice sent to Amazon before a shipment departs
+- **Chargeback:** Amazon-issued financial penalty for compliance violations (labeling, routing, timing)
+- **ASIN:** Amazon Standard Identification Number — the product identifier on Amazon's catalog
+- **GMV (Gross Merchandise Value):** Total retail value of products sold
