@@ -68,9 +68,9 @@ export default function App() {
       {/* Header */}
       <header className="sticky top-0 z-30 border-b bg-white/95 backdrop-blur">
         <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <img src="/nco-logo.png" alt="Nice and Co." className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200" />
-            <span className="text-base font-semibold tracking-tight text-[#1E3A5F] whitespace-nowrap">Nice and Co.</span>
+            <img src="/nco-wordmark.png" alt="niceandco." className="h-5 w-auto object-contain" />
           </div>
           <nav className="flex items-center gap-3 sm:gap-5">
             <a href={`${CONNECT}/calculator`} className="hidden sm:inline-flex items-center text-sm font-medium text-slate-600 hover:text-[#2A3CDE] hover:underline transition-colors">
@@ -182,10 +182,10 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t bg-white">
         <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <img src="/nco-logo.png" alt="Nice and Co." className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200" />
             <div className="leading-tight">
-              <span className="text-sm font-semibold text-[#1E3A5F] block">Nice and Co.</span>
+              <img src="/nco-wordmark.png" alt="niceandco." className="h-4 w-auto object-contain" />
               <p className="text-xs text-slate-500">Cleveland Born and Raised</p>
             </div>
           </div>
