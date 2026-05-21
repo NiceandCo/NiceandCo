@@ -2,6 +2,18 @@ import { ArrowRight, CheckCircle2, Package, TrendingUp, Truck, UserPlus } from "
 
 const CONNECT = "https://connect.nice-supply.com";
 
+// "niceandco." wordmark — "Co." pivots into "Connect" when `connect` is set.
+// nice/co heavy, "and" light. Color is inherited from the parent (set via className).
+function Wordmark({ connect = false, className = "" }: { connect?: boolean; className?: string }) {
+  return (
+    <span className={`lowercase tracking-tight whitespace-nowrap ${className}`}>
+      <span className="font-black">nice</span>
+      <span className="font-normal">and</span>
+      <span className="font-black">co.{connect ? "nnect" : ""}</span>
+    </span>
+  );
+}
+
 const HOW_IT_WORKS = [
   {
     step: "01",
@@ -70,7 +82,7 @@ export default function App() {
         <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <img src="/nco-logo.png" alt="Nice and Co." className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200" />
-            <img src="/nco-wordmark.png" alt="niceandco." className="h-5 w-auto object-contain" />
+            <Wordmark className="text-[#2A3CDE] text-xl" />
           </div>
           <nav className="flex items-center gap-3 sm:gap-5">
             <a href={`${CONNECT}/calculator`} className="hidden sm:inline-flex items-center text-sm font-medium text-slate-600 hover:text-[#2A3CDE] hover:underline transition-colors">
@@ -83,7 +95,7 @@ export default function App() {
               <UserPlus className="h-4 w-4" /> Apply as Partner
             </a>
             <a href={`${CONNECT}/login`} className="inline-flex items-center rounded-lg bg-[#2A3CDE] hover:bg-[#2A3CDE] px-4 py-2 text-sm font-semibold text-white transition-colors whitespace-nowrap">
-              Co.nnect Login
+              <Wordmark connect />{" "}Login
             </a>
           </nav>
         </div>
@@ -185,7 +197,7 @@ export default function App() {
           <div className="flex items-center gap-3">
             <img src="/nco-logo.png" alt="Nice and Co." className="h-8 w-8 rounded-lg object-cover ring-1 ring-slate-200" />
             <div className="leading-tight">
-              <img src="/nco-wordmark.png" alt="niceandco." className="h-4 w-auto object-contain" />
+              <Wordmark className="text-[#2A3CDE] text-base" />
               <p className="text-xs text-slate-500">Cleveland Born and Raised</p>
             </div>
           </div>
@@ -197,7 +209,7 @@ export default function App() {
             <a href={`${CONNECT}/calculator`} className="text-slate-500 hover:text-[#2A3CDE] transition-colors">Wholesale Calculator</a>
             <a href={`${CONNECT}/analyzer`} className="text-slate-500 hover:text-[#2A3CDE] transition-colors">ASIN Analyzer</a>
             <a href={`${CONNECT}/register`} className="text-slate-500 hover:text-[#2A3CDE] transition-colors">Apply as Partner</a>
-            <a href={`${CONNECT}/login`} className="text-[#2A3CDE] font-medium hover:underline">Co.nnect Login →</a>
+            <a href={`${CONNECT}/login`} className="text-[#2A3CDE] font-medium hover:underline"><Wordmark connect />{" "}Login →</a>
           </div>
         </div>
       </footer>
