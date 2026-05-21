@@ -94,8 +94,8 @@ export default function App() {
             <a href={`${CONNECT}/register`} className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-[#2A3CDE] px-4 py-2 text-sm font-semibold text-[#2A3CDE] hover:bg-blue-50 transition-colors whitespace-nowrap">
               <UserPlus className="h-4 w-4" /> Apply as Partner
             </a>
-            <a href={`${CONNECT}/login`} className="inline-flex items-center rounded-lg bg-[#2A3CDE] hover:bg-[#2A3CDE] px-4 py-2 text-sm font-semibold text-white transition-colors whitespace-nowrap">
-              <Wordmark connect />{" "}Login
+            <a href={`${CONNECT}/login`} className="inline-flex items-center gap-1 rounded-lg bg-[#2A3CDE] hover:bg-[#2A3CDE] px-4 py-2 text-sm font-semibold text-white transition-colors whitespace-nowrap">
+              <Wordmark connect />Login
             </a>
           </nav>
         </div>
@@ -209,7 +209,7 @@ export default function App() {
             <a href={`${CONNECT}/calculator`} className="text-slate-500 hover:text-[#2A3CDE] transition-colors">Wholesale Calculator</a>
             <a href={`${CONNECT}/analyzer`} className="text-slate-500 hover:text-[#2A3CDE] transition-colors">ASIN Analyzer</a>
             <a href={`${CONNECT}/register`} className="text-slate-500 hover:text-[#2A3CDE] transition-colors">Apply as Partner</a>
-            <a href={`${CONNECT}/login`} className="text-[#2A3CDE] font-medium hover:underline"><Wordmark connect />{" "}Login →</a>
+            <a href={`${CONNECT}/login`} className="inline-flex items-center gap-1 text-[#2A3CDE] font-medium hover:underline"><Wordmark connect />Login →</a>
           </div>
         </div>
       </footer>
