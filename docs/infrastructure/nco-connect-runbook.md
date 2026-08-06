@@ -543,37 +543,76 @@ harder than image batches. Stage 4's in-situ burn-in gates this.
 
 ---
 
-## Appendix — Recovering the DS1515+ drives
+## Appendix — The DS1515+ drives
 
-Do this once the P50 is up. It makes a good first real job and proves the machine
-out.
+**Decision: the five drives are shelved pending a replacement NAS.** They'll be
+inserted and read there rather than recovered now.
 
 The DS1515+ failure is almost certainly the **Intel Atom C2000 LPC clock bug** —
-a mainboard failure, not a disk failure. The drives are very likely healthy.
+a mainboard failure, not a disk failure, so the drives are very likely intact.
 
-Synology uses standard `mdadm` + LVM with ext4 or btrfs, so Linux reads it natively.
-With a USB-SATA dock:
+### Storage
+
+Label by bay, antistatic bags, cushioned and not stacked bare, somewhere cool and
+dry. Unpowered HDDs hold data for decades; the real risk is physical handling, not
+decay.
+
+### Constraints on the replacement NAS
+
+Three things to check **before ordering**, because each can block reading the array
+in place:
+
+| Constraint | Why |
+|---|---|
+| **At least 5 bays** | The array won't assemble with four of five drives present. |
+| **Drive compatibility policy** | Synology's 2025+ Plus series introduced restrictions around non-Synology-branded drives for pool creation and full support. Verify on the product page. |
+| **DSM version gap** | These volumes were written by a much older DSM. A large version jump can mean the new unit offers to reformat rather than import. |
+
+### Optional: verify now, cheaply
+
+A single USB-SATA dock (~£20) checks the drives **one at a time** — no assembly
+required:
 
 ```bash
-sudo apt install -y mdadm lvm2
+sudo apt install -y mdadm smartmontools
 
-# Attach drives, then:
+sudo smartctl -a /dev/sdX | grep -E 'Reallocated_Sector_Ct|Current_Pending_Sector|Power_On_Hours'
+sudo mdadm --examine /dev/sdX
+```
+
+`--examine` reads each drive's array metadata individually. Five healthy SMART
+reports plus consistent metadata means the array will almost certainly come up in
+a new NAS.
+
+**Why it's worth an evening:** the array was most likely SHR-1, which survives one
+drive failure. If one of the five is already dead there is **no redundancy left** —
+and discovering that mid-migration in a year, with no fallback, is far worse than
+discovering it now. It also makes a good first real job for the P50.
+
+### If reading them in-place fails
+
+Synology uses standard `mdadm` + LVM with ext4/btrfs, so Linux reads the array
+natively via dock(s):
+
+```bash
 sudo mdadm --assemble --scan
 cat /proc/mdstat
-
 sudo vgscan && sudo vgchange -ay
 sudo lvs
 
 sudo mkdir -p /mnt/recover
-sudo mount -o ro /dev/vg1/volume_1 /mnt/recover    # mount READ-ONLY first
+sudo mount -o ro /dev/vg1/volume_1 /mnt/recover    # READ-ONLY first
 ```
 
-Mount read-only until you're sure the array is intact. Copy anything needed to the
-DS220+ or `/data`, then wipe the drives before the chassis leaves the building.
+### Two open items
 
-**Capacity question:** work out what the 5-bay was providing. A 2-bay DS220+ as
-your only NAS is a real constraint for an image-heavy pipeline — worth deciding
-before the render pipeline starts pushing volume back at it.
+**These are recovery media, not the storage plan.** Contemporaneous with the
+DS1515+, so roughly a decade of power-on hours. Budget for new drives in the new
+unit and use the old ones only to move data across.
+
+**Work out what capacity the 5-bay was providing.** A 2-bay DS220+ as the only live
+NAS is a real constraint once the render pipeline starts pushing volume back at it.
+That figure should drive the bay count and drive size you buy.
 
 ---
 
