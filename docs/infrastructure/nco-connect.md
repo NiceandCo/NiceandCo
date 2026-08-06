@@ -185,20 +185,33 @@ sideways and needs **3–5 cm of clear air** — not flush against a wall or ano
 chassis. In this orientation the lid can stay closed. Vertical uses about 30 mm
 of shelf width.
 
-### Airflow
+### Cabinet airflow
 
-- **Keep it out of the NAS's exhaust stream.** Place it where the cabinet draws
-  cool air in. Feeding it pre-warmed drive exhaust causes throttling that no
-  amount of software tuning will fix.
-- **If the cabinet is sealed, add a fan.** A thermostatic cabinet fan or a 120 mm
-  USB fan — cool air in low, warm air out high. Not optional without passive
-  ventilation; the drives suffer too.
+The cabinet has an **intake and fan on the floor, exhaust near the top** — cool
+air in low, warm out high, working with convection. This is the correct
+configuration and it determines placement.
+
+- **Place the P50 low, near the intake.** Anything high in this airflow breathes
+  pre-warmed air from whatever sits below it. The P50 is both the largest heat
+  producer under load and the component that throttles when starved — drives just
+  age faster, the CPU loses performance immediately.
+- **Don't sit it on the floor intake.** Offset it or raise it on standoffs so it
+  isn't blocking the inlet it depends on.
+- **Hinge-up vertical cooperates with the cabinet flow.** Exhaust from behind the
+  hinge joins the rising column and leaves via the top vent.
+- **Point the laptop's intake panel away from the NAS**, into open cabinet space
+  or toward the intake side.
+- **Filter the floor intake.** A floor-level inlet pulls dust; add it to the
+  6–12 month clean.
+- **If the fan is thermostatic, review its setpoint** now that there is a second
+  heat source in the enclosure.
 
 ### Verify, don't assume
 
-Run the burn-in test **twice** — once on the desk for a baseline, once again
-after installation with the cabinet door closed. The cabinet is the real
-operating environment.
+Run the burn-in **twice** — once on the desk for a baseline, once again after
+installation with the cabinet door closed. The cabinet is the real operating
+environment, and the question is not whether there is airflow but whether there
+is enough for the added load.
 
 ```
 # All-eight-thread burn, no extra packages required
@@ -208,9 +221,21 @@ for i in $(seq 8); do timeout 600 sha256sum /dev/zero & done
 watch -n2 'cat /sys/class/thermal/thermal_zone*/temp; grep "cpu MHz" /proc/cpuinfo | sort -u'
 ```
 
-Temps are in millidegrees. All-core turbo on a 6700HQ is around 3.1 GHz. Settling
-near 2.6 GHz is mild throttling; below that is a real cooling problem. Fix airflow
-before committing workloads.
+Temps are in millidegrees.
+
+**Watch the NAS's drive temperatures too.** The NAS reports them, which makes it a
+free in-cabinet thermometer — and heat-related drive failure is the expensive
+outcome. Record a baseline before the P50 goes in, then again during the in-situ
+burn-in.
+
+| Reading | Good | Problem |
+|---|---|---|
+| P50 sustained all-core clock | 2.8–3.1 GHz | below 2.6 GHz |
+| P50 package temp under load | under ~85 °C | pegged at 95–100 °C |
+| NAS drive temps | under 45 °C | over 50 °C, or +5 °C vs. baseline |
+
+A drive-temp delta beyond a few degrees means the fan was sized for one heat
+source, not two — fit a larger fan or a second one before committing workloads.
 
 ### Power and cabling
 
@@ -364,6 +389,82 @@ unattended with pre-approved permissions and production credentials is a very
 different risk profile from an interactive session approving each step. Logs to
 `/data` so there's an audit trail.
 
+### Local inference — evaluated option
+
+Running models locally to reduce API spend is viable here for *some* of the work.
+Status: **not yet decided — measure first.**
+
+**Capability.** Local inference speed is bound by memory bandwidth, not cores.
+DDR4-2133 dual channel gives ~25–30 GB/s in practice, and generation speed is
+roughly bandwidth ÷ model size:
+
+| Model class | Q4 size | Single-stream |
+|---|---|---|
+| 1–3B | 1–2 GB | 15–30 tok/s |
+| 7–8B | ~4.5 GB | 5–7 tok/s |
+| 13–14B | ~8 GB | 3–4 tok/s |
+| 70B | ~40 GB | <1 tok/s — fits in RAM, unusable |
+
+The Quadro does not help: 2–4 GB VRAM won't hold a useful model and Maxwell is at
+end-of-life for current CUDA. **CPU-only inference box.** Practical ceiling is a
+7B–14B model at Q4_K_M; continuous batching (llama.cpp serving many sequences per
+weight read) lifts aggregate throughput to roughly 20–30 tok/s. The 62 GiB is a
+real advantage — model, large KV cache for parallel sequences, and an embedding
+model all stay resident.
+
+**What local should and shouldn't do.** The tasks a 7B handles well and the tasks
+that cost real money are not the same set — local-friendly work produces short
+outputs, and output is what's billed.
+
+| Local | Claude |
+|---|---|
+| Classification (category, supplier, template) | PDP copy and long-form descriptions |
+| Attribute extraction from supplier text | Judgment across messy or contradictory input |
+| Normalization (`Blk` → `Black`, units) | Genuine questions and inquiry |
+| Triage — does this need the expensive path? | Anything customer-facing where quality is revenue |
+| Validating generated output against schema | |
+
+**Embeddings are the clearest win** and worth building regardless of what the cost
+measurement says. They run fast on CPU with no meaningful quality compromise, and
+**Supabase already ships pgvector** — no new infrastructure. They unlock semantic
+dedup, product matching against the catalogue, classification by nearest neighbour
+(often better and far faster than asking a 7B), and retrieval.
+
+**Rosy AI architecture.** Not fine-tuning — retrieval. Knowledge base → local
+embeddings → pgvector in Supabase → retrieval runs entirely local and free →
+generation escalates to Claude. Retrieval is the expensive-to-scale part and it
+never leaves the box. It also improves cache economics: retrieved chunks sit
+*after* the stable taxonomy prefix, so the cached prefix stays intact.
+
+**Escalation.** Do **not** route on the local model's self-reported confidence —
+small models are badly calibrated and report high confidence on exactly the wrong
+outputs. Use static routing by task type first (classification/extraction → local,
+generation/inquiry → Claude), then validation-based escalation: local emits
+structured output, plain code validates it against a schema or business rule, and
+failures escalate. Deterministic and auditable.
+
+**Thread contention is the constraint that bites.** Three workloads now compete for
+eight threads. Local inference at full tilt takes every core available; run it
+alongside mockup rendering and both crawl. Either schedule them in separate windows
+(inference overnight, images during the day) or pin thread counts explicitly and
+accept half speed on both. Sustained inference is also the hardest thermal case in
+the whole workload — harder than image batches — so the in-situ burn-in gates this.
+
+**Stack.** Ollama to prototype; llama.cpp server in production (continuous batching
+matters and Ollama hides those knobs). fastembed or a llama.cpp embedding server
+for embeddings. Target a current 7B–14B instruct model at Q4_K_M chosen for
+structured-output and extraction scores. The NVMe upgrade matters more in this
+world — model loading off the HDD is not tolerable.
+
+**Order of work.** Measure the real API bill for one full enrichment pass with the
+Batch API and prompt caching enabled *before* building any of this — batch is 50%
+off and cached input reads at roughly a tenth of standard price, so the cost may
+already be low enough that an inference stack isn't worth the engineering time or
+the thread contention. Then: build embeddings regardless, add local classification
+and extraction with static routing, and keep generation on Claude unless a real A/B
+on live listings justifies the tradeoff. Product copy quality is revenue, not just
+cost.
+
 ---
 
 ## 8. Deployment Plan
@@ -435,15 +536,20 @@ network-dependent is unverified.
 - [ ] Confirm free M.2 NVMe slot — `sudo nvme list`, or open the bottom cover
 - [ ] SMART check on `/dev/sda`
 - [ ] Battery health check
-- [ ] Thermal baseline (desk) and re-test (in cabinet)
+- [ ] Thermal baseline (desk) and re-test (in cabinet), including NAS drive-temp
+      before/after delta
+- [ ] Filter on the cabinet floor intake; review fan setpoint if thermostatic
+- [ ] Measure real API cost for one full enrichment pass (Batch API + prompt
+      caching) before deciding on local inference
 - [ ] DHCP reservation for `192.168.0.82`
 - [ ] SSH key auth, then `PasswordAuthentication no`
 - [ ] Stronger account password — current one is short, and a real concern while
       SSH password auth is still enabled
 - [ ] Tailscale on this box and the workstation
 - [ ] BIOS: power-on-after-AC-loss, Wake-on-LAN
-- [ ] Cabinet ventilation assessment; add a fan if sealed
 - [ ] Repaste the CPU
+
+Resolved: cabinet ventilation confirmed — floor intake with fan, top exhaust.
 
 ---
 
