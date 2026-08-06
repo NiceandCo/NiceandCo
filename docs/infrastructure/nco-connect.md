@@ -171,9 +171,55 @@ needs to be reached again:
 
 ## 5. Physical Install — NAS Cabinet
 
+> **Step-by-step execution:** see [`nco-connect-runbook.md`](./nco-connect-runbook.md).
+> This section is the reference; the runbook is the order of operations.
+
 The cabinet is the riskiest part of this deployment. A 45 W laptop CPU in an
 enclosed space alongside drives that are already producing heat will throttle
 unless the install is done deliberately.
+
+### What's in the cabinet
+
+Wooden built-in cupboard, floor intake fan, exhaust near the top.
+
+| Unit | State | Disposition |
+|---|---|---|
+| **Synology DS220+** (2-bay) | Running — status, both LAN, both disks green | Stays. The live NAS. |
+| **Synology DS1515+** (5-bay) | Dark — won't stay powered | **Remove.** Frees the P50's slot. |
+| Floor intake fan | Running, heavily dust-clogged | Clean. Consider a second fan at the top exhaust. |
+
+**The DS1515+ almost certainly has the Intel Atom C2000 bug** — LPC clock signal
+degradation on the C2538 that bricked DS1515+/DS1815+/DS415+ units around 2017.
+Synology's extended-warranty programme is long expired. A DIY 100 Ω resistor fix
+exists but isn't worth it on a decade-old unit.
+
+Critically, **that is a mainboard failure, not a disk failure** — the five drives
+are almost certainly healthy. Synology stores volumes as standard `mdadm` + LVM
+with ext4/btrfs, so the array is readable on Linux via a USB-SATA dock. Recovering
+it makes a good first real job for the P50. Label the drives by bay before pulling
+them.
+
+Open question: what capacity was the 5-bay providing? A 2-bay DS220+ as the only
+NAS is a constraint for an image-heavy pipeline.
+
+### Revised thermal budget
+
+Removing the DS1515+ frees **space, not heat** — it's already off and contributing
+nothing. The real arithmetic:
+
+| | Load |
+|---|---|
+| Cabinet today (DS220+ only) | ~15–25 W |
+| Cabinet with P50 under sustained load | ~75–125 W |
+
+That is roughly a **4× step change into a wooden enclosure**, on a fan sized for
+the current load. It doesn't sink the plan, but it makes the in-situ burn-in the
+real gate, and it argues for fitting a fan at the top exhaust if that vent is
+currently passive.
+
+The DS220+ is also relevant as a compute comparison: a dual-core Celeron J4025
+with 2 GB stock. Against the P50's 4C/8T and 62 GiB, the gap is roughly 3–4× on
+cores and ~30× on memory. Everything currently computing on the NAS should move.
 
 ### Orientation
 
