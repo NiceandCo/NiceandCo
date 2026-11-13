@@ -38,6 +38,9 @@ Structured offer creation using brand target costs, ASIN submission to Amazon Ve
 ### Purchase Order & Shipment Management
 Amazon PO acceptance, shipment routing and Advance Ship Notice (ASN) creation, compliance with Amazon FC routing requirements, and invoice submission.
 
+### Marketing: Ads & Trade
+Retail media for partner brands on Amazon (Sponsored Products, Sponsored Brands, Sponsored Display, DSP), Walmart, Wayfair and Lowe's, with targets set from each brand's own unit economics. Promotion and trade plans for grocery buyers and distributors such as Meijer and C&S Wholesale Grocers.
+
 ### Remittance & Financial Reporting
 Net remittance to brand partners after Amazon deductions and Nice and Co. co-op fee. Transparent reporting via the Co.nnect portal showing POs, shipments, remittances, and catalog status.
 
