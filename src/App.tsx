@@ -59,6 +59,27 @@ const HOW_IT_WORKS = [
   },
 ];
 
+// Marketing service line. Keep every line true today: no results, badges or
+// spend figures we cannot back up (see niceco-nexus knowledge-vault/retailmedia/nco-retail-media-service.md).
+const MARKETING = [
+  {
+    title: "Amazon Ads, Managed to Profit",
+    body: "Sponsored Products, Sponsored Brands, Display and DSP, with every target set from your real unit economics, not a generic ACoS.",
+  },
+  {
+    title: "Walmart, Wayfair & Lowe's",
+    body: "Retail media on the marketplaces we already run for you, budgeted channel by channel against what each one actually pays you.",
+  },
+  {
+    title: "Grocery & Distributor Trade",
+    body: "Promotion and media plans for Meijer, C&S and regional distributors: intro pricing, TPRs, digital coupons and retailer media, priced up front.",
+  },
+  {
+    title: "Ads That Never Outrun Stock",
+    body: "We already handle your POs, shipments and deductions, so spend, inventory and margin are managed in one place.",
+  },
+];
+
 const VALUE_PROPS = [
   {
     headline: "Vendor Code Terminated?",
@@ -163,6 +184,30 @@ export default function App() {
                     </li>
                   ))}
                 </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Marketing */}
+      <section className="px-4 sm:px-6 py-14 sm:py-20 bg-white border-y border-slate-100">
+        <div className="mx-auto w-full max-w-[1100px]">
+          <div className="text-center mb-10 sm:mb-14 space-y-2">
+            <p className="text-xs uppercase tracking-widest text-[#2A3CDE] font-semibold">Marketing</p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#000000]">Ads &amp; Trade Marketing</h2>
+            <p className="text-slate-500 max-w-xl mx-auto text-sm sm:text-base">
+              Once your products are live, we grow them: retail media across Amazon, Walmart, Wayfair and Lowe's,
+              and trade plans for grocery buyers.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {MARKETING.map(({ title, body }) => (
+              <div key={title} className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-6 space-y-2">
+                <h3 className="font-semibold text-[#000000] text-base flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-[#2A3CDE]" /> {title}
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
